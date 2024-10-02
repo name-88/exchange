@@ -4,13 +4,19 @@ from tkinter import *
 from tkinter import messagebox as mb
 from tkinter import ttk
 
+# Функция для метки базовой валюты
+def update_b_label(event):
+    code = b_combobox.get()
+    name = cur.get(code)
+    b_label.config(text=name)
+
 # Функция для обновления метки с названием валюты
-def update_c_label(event):
+def update_t_label(event):
     code = t_combobox.get()
     name = cur.get(code)
-    c_label.config(text=name)
+    t_label.config(text=name)
 
-    # Функция exchange
+# Функция exchange
 def exchange():
     t_code = t_combobox.get()
     b_code = b_combobox.get()
@@ -31,7 +37,7 @@ def exchange():
     else:
             mb.showwarning("Внимание!", "Введите код валюты!")
 
-    # Словарь с кодами валют
+# Словарь с кодами валют
 cur = {
     'USD': 'Американский доллар',
     'RUB': 'Российский рубль',
@@ -45,25 +51,31 @@ cur = {
     'KZT': 'Казахский тенге'
  }
 
-    # Рисуем главное окно
+# Рисуем главное окно
 window = Tk()
 window.title("Курсы валют")
 window.geometry("360x300")
 
-    # список базовой валюты
+# Метка базовой валюты
+b_label = ttk.Label()
+b_label.pack(padx=10, pady=10)
+
+# список базовой валюты
 Label(text="Базовая валюта").pack(padx=10, pady=10)
 b_combobox = ttk.Combobox(value=list(cur.keys()))
 b_combobox.pack(padx=10, pady=10)
+b_combobox.bind("<<ComboboxSelected>>", update_b_label)
 
 
-    # Список целевой валюты
+# Список целевой валюты
 Label(text="Целевая валюта").pack(padx=10, pady=10)
 t_combobox = ttk.Combobox(value=list(cur.keys()))
 t_combobox.pack(padx=10, pady=10)
-t_combobox.bind("<<ComboboxSelected>>", update_c_label)
+t_combobox.bind("<<ComboboxSelected>>", update_t_label)
 
-c_label = ttk.Label()
-c_label.pack(padx=10, pady=10)
+# Метка целевой валюты
+t_label = ttk.Label()
+t_label.pack(padx=10, pady=10)
 
 Button(text="Получить курс обмена к доллару", command=exchange).pack(padx=10, pady=10)
 
